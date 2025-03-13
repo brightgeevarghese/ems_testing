@@ -1,4 +1,4 @@
-package com.bright.repolayertesting.dto.response;
+package com.bright.ems.dto.response;
 
 public record EmployeeResponseDto(
         String firstName,

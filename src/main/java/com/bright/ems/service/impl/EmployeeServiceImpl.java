@@ -1,10 +1,10 @@
-package com.bright.repolayertesting.service.impl;
+package com.bright.ems.service.impl;
 
-import com.bright.repolayertesting.dto.request.EmployeeRequestDto;
-import com.bright.repolayertesting.dto.response.EmployeeResponseDto;
-import com.bright.repolayertesting.model.Employee;
-import com.bright.repolayertesting.repository.EmployeeRepository;
-import com.bright.repolayertesting.service.EmployeeService;
+import com.bright.ems.dto.request.EmployeeRequestDto;
+import com.bright.ems.dto.response.EmployeeResponseDto;
+import com.bright.ems.model.Employee;
+import com.bright.ems.repository.EmployeeRepository;
+import com.bright.ems.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +28,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Optional<EmployeeResponseDto> createEmployee(EmployeeRequestDto employeeRequestDto) {
+        if (employeeRepository.findByEmail(employeeRequestDto.email()).isPresent()) {
+//            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
+            return Optional.empty();
+        }
         Employee newEmployee = new Employee(employeeRequestDto.firstName(), employeeRequestDto.lastName(), employeeRequestDto.email(), employeeRequestDto.departmentCode());
         Employee savedEmployee = employeeRepository.save(newEmployee);
         EmployeeResponseDto employeeResponseDto = new EmployeeResponseDto(savedEmployee.getFirstName(), savedEmployee.getLastName(), savedEmployee.getEmail());

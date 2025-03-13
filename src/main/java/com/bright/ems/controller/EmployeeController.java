@@ -1,8 +1,8 @@
-package com.bright.repolayertesting.controller;
+package com.bright.ems.controller;
 
-import com.bright.repolayertesting.dto.request.EmployeeRequestDto;
-import com.bright.repolayertesting.dto.response.EmployeeResponseDto;
-import com.bright.repolayertesting.service.EmployeeService;
+import com.bright.ems.dto.request.EmployeeRequestDto;
+import com.bright.ems.dto.response.EmployeeResponseDto;
+import com.bright.ems.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

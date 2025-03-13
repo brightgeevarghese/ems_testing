@@ -1,6 +1,6 @@
-package com.bright.repolayertesting.repository;
+package com.bright.ems.repository;
 
-import com.bright.repolayertesting.model.Employee;
+import com.bright.ems.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

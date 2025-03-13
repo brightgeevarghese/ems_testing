@@ -1,8 +1,8 @@
-package com.bright.repolayertesting.controller;
+package com.bright.ems.controller;
 
-import com.bright.repolayertesting.dto.request.EmployeeRequestDto;
-import com.bright.repolayertesting.dto.response.EmployeeResponseDto;
-import com.bright.repolayertesting.service.EmployeeService;
+import com.bright.ems.dto.request.EmployeeRequestDto;
+import com.bright.ems.dto.response.EmployeeResponseDto;
+import com.bright.ems.service.EmployeeService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,8 +21,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @WebMvcTest(EmployeeController.class)
 class EmployeeControllerTest {

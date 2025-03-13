@@ -1,6 +1,6 @@
-package com.bright.repolayertesting.repository;
+package com.bright.ems.repository;
 
-import com.bright.repolayertesting.model.Employee;
+import com.bright.ems.model.Employee;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

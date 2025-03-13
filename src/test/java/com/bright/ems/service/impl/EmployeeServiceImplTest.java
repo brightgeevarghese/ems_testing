@@ -1,9 +1,9 @@
-package com.bright.repolayertesting.service.impl;
+package com.bright.ems.service.impl;
 
-import com.bright.repolayertesting.dto.request.EmployeeRequestDto;
-import com.bright.repolayertesting.dto.response.EmployeeResponseDto;
-import com.bright.repolayertesting.model.Employee;
-import com.bright.repolayertesting.repository.EmployeeRepository;
+import com.bright.ems.dto.request.EmployeeRequestDto;
+import com.bright.ems.dto.response.EmployeeResponseDto;
+import com.bright.ems.model.Employee;
+import com.bright.ems.repository.EmployeeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,16 +29,30 @@ class EmployeeServiceImplTest {
     @Test
     @DisplayName("Test for save Employee")
     void givenEmployeeRequest_whenCreate_thenReturnSavedResponse() {
-        //Given
+        // Given: An employee request DTO and a mocked saved employee
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto("John", "Smith", "john.smith@gmail.com", "Compro");
         Employee savedEmployee = new Employee("John", "Smith", "john.smith@gmail.com", "Compro");
-        //Define the behaviour of the mocked repository
+        // Mock the repository behavior to return the saved employee when save is called
         Mockito.when(employeeRepository.save(Mockito.any(Employee.class))).thenReturn(savedEmployee);
-        //When
+        // When: Calling the createEmployee method
         Optional<EmployeeResponseDto> employeeResponseDto = employeeService.createEmployee(employeeRequestDto);
-        //Then
+        // Then: Verify that the employee was created successfully
         assertTrue(employeeResponseDto.isPresent());
         assertEquals("John", employeeResponseDto.get().firstName());
+    }
+
+    @Test
+    @DisplayName("Test for fail to save Employee when employee already exists")
+    void givenExistingEmployeeRequest_whenCreate_thenReturnConflict() {
+        // Given: An employee request DTO and an existing employee with the same email
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto("John", "Smith", "john.smith@gmail.com", "Compro");
+        Employee existingEmployee = new Employee("John", "Smith", "john.smith@gmail.com", "Compro");
+        // Mock repository behavior to return the existing employee when searching by email
+        Mockito.when(employeeRepository.findByEmail(employeeRequestDto.email())).thenReturn(Optional.of(existingEmployee));
+        // When: Attempting to create a new employee with the same email
+        Optional<EmployeeResponseDto> employeeResponseDto = employeeService.createEmployee(employeeRequestDto);
+        // Then: Ensure that the employee is not created
+        assertFalse(employeeResponseDto.isPresent());
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.bright.repolayertesting.model;
+package com.bright.ems.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
