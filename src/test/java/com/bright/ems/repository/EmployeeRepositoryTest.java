@@ -45,7 +45,13 @@ class EmployeeRepositoryTest {
     @Test
     @DisplayName("Test for save employee operation")
     void givenEmployee_whenSaved_thenReturnSavedEmployee() {
+        // Given: An employee object is created
+        // (Already initialized in setUp())
+
+        // When: The employee is saved
         Employee savedEmployee = employeeRepository.save(employee);
+
+        // Then: The saved employee should not be null and should have the expected first name
         assertNotNull(savedEmployee);
         assertEquals(employee.getFirstName(), savedEmployee.getFirstName());
         Assertions.assertThat(savedEmployee.getEmployeeId()).isGreaterThan(0);
@@ -54,6 +60,7 @@ class EmployeeRepositoryTest {
     @Test
     @DisplayName("Test for get Employee list")
     void givenEmployees_whenFindAll_thenReturnList() {
+        // Given: Multiple employees are saved in the repository
         Employee employee1 = Employee.builder()
                 .firstName("John")
                 .lastName("Smith")
@@ -68,28 +75,35 @@ class EmployeeRepositoryTest {
                 .build();
         employeeRepository.save(employee1);
         employeeRepository.save(employee2);
+
+        // When: Retrieving all employees
         List<Employee> employeeList = employeeRepository.findAll();
+
+        // Then: The list should contain all saved employees
         Assertions.assertThat(employeeList)
                 .isNotEmpty()
                 .hasSize(2)
                 .containsExactlyInAnyOrder(employee1, employee2);
-//        assertNotNull(employeeList);
-//        assertEquals(2, employeeList.size());
-//        Assertions.assertThat(employeeList.getFirst().getEmployeeId()).isEqualTo(employee1.getEmployeeId());
     }
 
     @Test
     @DisplayName("Test for get Employee by Email")
     void givenEmployee_whenFindByEmail_thenReturnEmployee() {
+        // Given: An employee is saved in the repository
         employeeRepository.save(employee);
+
+        // When: Searching for an employee by email
         Employee employeeByEmail = employeeRepository.findByEmail(employee.getEmail())
-                .orElseThrow(AssertionError::new);
+                .orElseThrow(() -> new AssertionError("Employee not found"));
+
+        // Then: The retrieved employee should have the expected first name
         assertEquals(employee.getFirstName(), employeeByEmail.getFirstName());
     }
 
     @Test
     @DisplayName("Test for get All Employee By First Name")
     void givenEmployees_whenFindByFirstName_thenReturnList() {
+        // Given: Multiple employees with the same first name are saved
         Employee employee1 = Employee.builder()
                 .firstName("John")
                 .lastName("Smith")
@@ -110,7 +124,11 @@ class EmployeeRepositoryTest {
         employeeRepository.save(employee1);
         employeeRepository.save(employee2);
         employeeRepository.save(employee3);
+
+        // When: Searching for employees by first name "Jane"
         List<Employee> employeeList = employeeRepository.findByFirstName("Jane");
+
+        // Then: The returned list should contain 2 employees with the first name "Jane"
         assertNotNull(employeeList);
         assertEquals(2, employeeList.size());
     }
@@ -118,15 +136,20 @@ class EmployeeRepositoryTest {
     @Test
     @DisplayName("Test for update")
     void givenEmployee_whenUpdated_thenReturnUpdatedEmployee() {
+        // Given: An employee is saved in the repository
         employeeRepository.save(employee);
-        Optional<Employee> optionalEmployee = employeeRepository.findByEmail(employee.getEmail());
-        if(optionalEmployee.isPresent()) {
-            Employee foundEmployee = optionalEmployee.get();
-            foundEmployee.setFirstName("Johny");
-            Employee updatedEmployee = employeeRepository.save(foundEmployee);
-            assertNotNull(updatedEmployee);
-            assertEquals("Johny", updatedEmployee.getFirstName());
-        }
+
+        // When: Retrieving, updating, and saving the employee
+        Employee foundEmployee = employeeRepository.findByEmail(employee.getEmail())
+                .orElseThrow(() -> new AssertionError("Employee not found"));
+        foundEmployee.setFirstName("Johny");
+        employeeRepository.save(foundEmployee);
+
+        // Then: The update should be persisted in the database
+        Employee updatedEmployee = employeeRepository.findByEmail(employee.getEmail())
+                .orElseThrow(() -> new AssertionError("Updated Employee not found"));
+        assertNotNull(updatedEmployee);
+        assertEquals("Johny", updatedEmployee.getFirstName());
     }
 
 }

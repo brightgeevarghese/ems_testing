@@ -18,6 +18,7 @@ public class Employee {
     private Long employeeId;
     private String firstName;
     private String lastName;
+    @Column(unique = true, nullable = false)
     private String email;
     private String departmentCode;
 
